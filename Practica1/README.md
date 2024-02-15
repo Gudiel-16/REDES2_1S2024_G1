@@ -497,3 +497,36 @@ end
 show running-config
 copy running-config startup-config
 ```
+--------------------------------------------------------------------
+##Configuración de STP
+
+Para la primera configuracion no es necesario introducir comandos ya que el protocolo PVST esta configurado por defecto en los switches
+
+**Comandos para configuracion RPVST**
+```
+enable
+configure terminal
+spanning-tree mode rapid-pvst
+exit
+show running-config
+```
+**Comandos para realizar las pruebas de rendimiento y recuperacion :**
+```
+enable
+configure terminal
+interface FastEthernet0/10
+shutdown
+no shutdown (prender)
+```
+###Elección de escenario con mejor resultado de convergencia
+Para la eleccion del mejor escenario se realizó una serie de pruebas configurando los switches con los distintos protocolos (PVST y RPVST)
+
+####Tiempos de recuperación de red   
+| Escenario | Protocolo spanning-tree | Red primaria | Red Básicos | Red Diversificado |
+| ----------- | ----------- | ----------- | ----------- | ----------- |
+| 1 | PVST | 47.12 *seg* | 44.5 *seg* | 60.44 *seg* |
+| 2 | Rapid PVST | 1.44 *seg* | 0.96 *seg* | 1.22 *seg* |
+
+**Elección de escenario**
+
+Al hacer la comparativa de los tiempos de repcuperacion de cada red llegamos a la cconclusión de que el protocolo RPVST es mas rapido y no se nota la perdida de conexion haciendo de este el ideal para la topografía propuesta
