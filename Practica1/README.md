@@ -498,7 +498,7 @@ show running-config
 copy running-config startup-config
 ```
 --------------------------------------------------------------------
-##Configuración de STP
+## Configuración de STP
 
 Para la primera configuracion no es necesario introducir comandos ya que el protocolo PVST esta configurado por defecto en los switches
 
@@ -518,10 +518,122 @@ interface FastEthernet0/10
 shutdown
 no shutdown (prender)
 ```
-###Elección de escenario con mejor resultado de convergencia
+
+## Seguridad de interfaces de red
+
+### Políticas de puerto compartidas
+
+#### Desactivar el protocolo DTP de los puertos troncales:
+- Estado del protocolo DTP
+    ```
+    show interfaces FastEthernet0/2 switchport
+    ```
+- Desactivar el DTP en un puerto
+    ```
+    switchport mode trunk
+    switchport nonegotiate
+    ```
+
+
+### Seguridad para interfaces asignadas a la VLAN
+
+#### Primaria
+- SW5
+
+    PC1
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/14
+    switchport port-security
+    ```
+    PC2
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/15
+    switchport port-security
+    ```
+- SW12
+
+    PC9
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/15
+    switchport port-security
+    ```
+    PC10
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/14
+    switchport port-security
+    ```
+
+#### Basicos
+- SW6
+
+    PC3
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/16
+    switchport port-security
+    switchport port-security maximum 1
+    switchport port-security mac-address 0001.63D9.D589
+    ```
+- SW11
+
+    PC8
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/16
+    switchport port-security
+    switchport port-security maximum 1
+    switchport port-security mac-address 0004.9ABA.D139
+    ```
+
+    
+#### Diversificado
+- SW7
+
+    PC4
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/17
+    switchport port-security
+    ```
+    PC5
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/18
+    switchport port-security
+    ```
+- SW10
+
+    PC6
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/18
+    switchport port-security
+    ```
+    PC7
+    ```
+    enable
+    configure terminal
+    interface fastEthernet 0/17
+    switchport port-security
+    ```
+
+## Elección de escenario con mejor resultado de convergencia
 Para la eleccion del mejor escenario se realizó una serie de pruebas configurando los switches con los distintos protocolos (PVST y RPVST)
 
-####Tiempos de recuperación de red   
+#### Tiempos de recuperación de red   
 | Escenario | Protocolo spanning-tree | Red primaria | Red Básicos | Red Diversificado |
 | ----------- | ----------- | ----------- | ----------- | ----------- |
 | 1 | PVST | 47.12 *seg* | 44.5 *seg* | 60.44 *seg* |
