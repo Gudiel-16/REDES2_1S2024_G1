@@ -21,4 +21,28 @@ Para mas informacion ver el documento completo en  [Redes2 Practica 2](https://u
 
 ![Topologia de red practica 2!]( Images\Topologia.png)
 
+## Configuracion de VLAN
 
+* CORPORATIVO61
+* VENTAS11
+* DISTRIBUCION21
+
+## Interfaces de VLAN
+
+* Numeros escogidos (`+` numero de grupo):
+    * Y = 70 `->` 71
+    * X = 80 `->` 81
+    * Z = 90 `->` 91
+
+* Direcciones de red:
+    1. Corporativo:
+        * RRHH: 192.168.71.1
+        * SOPORTE: 192.168.81.1
+        * IT: 192.168.91.1
+        * Mascara para las direcciones de red: 255.255.255.0
+    2. Ventas:
+        * Direccion: 1.0.0.0
+        * Mascara: 255.0.0.0
+    3. DistribucionL
+        * Direccion: 2.0.0.0
+        * Mascara: 255.0.0.0
