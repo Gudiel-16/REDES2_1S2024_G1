@@ -19,7 +19,7 @@ Para mas informacion ver el documento completo en  [Redes2 Practica 2](https://u
 ---------------------------------------------------------
 ## Topología Utilizada
 
-![Topologia de red practica 2!]( Images\Topologia.png)
+![Topologia de red practica 2!](Images/Topologia.png)
 
 ## Configuracion de VLAN
 
@@ -46,3 +46,221 @@ Para mas informacion ver el documento completo en  [Redes2 Practica 2](https://u
     3. DistribucionL
         * Direccion: 2.0.0.0
         * Mascara: 255.0.0.0
+
+## Configuracion PCs
+
+#### RETALHULEU
+
+* PC1:
+    * 192.168.71.3
+    * 255.255.255.0
+    * 192.168.71.1
+* PC2:
+    * 192.168.71.4
+    * 255.255.255.0
+    * 192.168.71.1
+* PC3:
+    * 192.168.71.5
+    * 255.255.255.0
+    * 192.168.71.1
+
+#### HUEHUETENANGO
+
+* PC4:
+    * 192.168.81.6
+    * 255.255.255.0
+    * 192.168.81.1
+
+#### SOLOLA
+
+* PC5:
+    * 192.168..
+    * 255.255.255.0
+    * 192.168..
+
+* PC6:
+    * 192.168..
+    * 255.255.255.0
+    * 192.168..
+
+## Configuracion LACP
+
+#### MSW1
+
+```
+enable
+configure terminal
+interface range fastEthernet 0/7-8
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+
+#### SW1
+
+```
+enable
+configure terminal
+interface range fastEthernet 0/7-8
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+
+#### MSW2
+
+```
+enable
+configure terminal
+interface range fastEthernet 0/14-15
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+
+#### SW2
+
+```
+enable
+configure terminal
+interface range fastEthernet 0/14-15
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+
+## Configuracion EIGRP
+
+#### MSW1
+
+* Crear VLANs:
+
+```
+enable
+configure terminal
+vlan 61
+name CORPORATIVO61
+
+vlan 11
+name VENTAS11
+
+show vlan
+```
+
+* Interfaces VLAN:
+
+```
+enable
+configure terminal
+interface vlan 61
+ip address 192.168.71.1 255.255.255.0
+no shutdown
+exit
+
+interface vlan 11
+ip address 1.0.0.1 255.0.0.0
+no shutdown
+exit
+
+show running-config
+```
+
+* Modo acceso:
+
+```
+enable
+configure terminal
+interface gigabitEthernet 0/1
+switchport mode access
+switchport access vlan 11
+
+interface port-channel 1
+switchport mode access
+switchport access vlan 61
+
+show running-config
+```
+
+* EIRGP:
+
+```
+enable
+configure terminal
+ip routing
+router eigrp 50
+network 1.0.0.0
+network 192.168.71.0
+network 192.168.81.0
+no auto-summary
+
+show running-config
+```
+
+#### MSW2
+
+* Crear VLANs:
+
+```
+enable
+configure terminal
+vlan 61
+name CORPORATIVO61
+
+vlan 11
+name VENTAS11
+
+show vlan
+```
+
+* Interfaces VLAN:
+
+```
+enable
+configure terminal
+interface vlan 61
+ip address 192.168.81.1 255.255.255.0
+no shutdown
+exit
+
+interface vlan 11
+ip address 1.0.0.2 255.0.0.0
+no shutdown
+exit
+
+show running-config
+```
+
+* Modo acceso:
+
+```
+enable
+configure terminal
+interface gigabitEthernet 0/1
+switchport mode access
+switchport access vlan 11
+
+interface port-channel 1
+switchport mode access
+switchport access vlan 61
+
+show running-config
+```
+
+* EIRGP:
+
+```
+enable
+configure terminal
+ip routing
+router eigrp 50
+network 1.0.0.0
+network 192.168.71.0
+network 192.168.81.0
+no auto-summary
+
+show running-config
+```
