@@ -74,14 +74,14 @@ Para mas informacion ver el documento completo en  [Redes2 Practica 2](https://u
 #### SOLOLA
 
 * PC5:
-    * 192.168..
+    * 192.168.91.7
     * 255.255.255.0
-    * 192.168..
+    * 192.168.91.1
 
 * PC6:
-    * 192.168..
+    * 192.168.91.8
     * 255.255.255.0
-    * 192.168..
+    * 192.168.91.1
 
 ## Configuracion LACP
 
@@ -127,6 +127,30 @@ show etherchannel summary
 enable
 configure terminal
 interface range fastEthernet 0/14-15
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+
+#### MSW3
+
+```
+enable
+configure terminal
+interface range fastEthernet 0/7-8
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+
+#### SW3
+
+```
+enable
+configure terminal
+interface range fastEthernet 0/7-8
 channel-protocol lacp
 channel-group 1 mode active
 
@@ -261,6 +285,130 @@ network 1.0.0.0
 network 192.168.71.0
 network 192.168.81.0
 no auto-summary
+
+show running-config
+```
+
+## Configuracion OSPF
+
+#### MSW2
+
+* Crear VLANs:
+
+```
+enable
+configure terminal
+
+vlan 21
+name DISTRIBUCION21
+
+// vlan 61 ya existe
+
+show vlan
+```
+
+* Interfaces VLAN:
+
+```
+// ya configurado anteriormente
+interface vlan 61
+ip address 192.168.81.1 255.255.255.0 (gateway y mask de lap1)
+no shutdown
+
+interface vlan 21
+ip address 2.0.0.1 255.0.0.0
+No shutdown
+
+show running-config
+```
+
+* Modo acceso:
+
+```
+enable
+configure terminal
+interface gigabitEthernet 0/2
+switchport mode access
+switchport access vlan 21
+
+// ya configurado anteriormente
+interface port-channel 1
+switchport mode access
+switchport access vlan 61
+
+show running-config
+```
+
+* OSPF:
+
+```
+enable
+configure terminal
+ip routing
+router ospf 10
+
+network 192.168.81.0 0.0.0.255 area 10
+network 192.168.91.0 0.0.0.255 area 10
+network 2.0.0.0 0.255.255.255 area 10
+
+show running-config
+```
+
+#### MSW3
+
+* Crear VLANs:
+
+```
+enable
+configure terminal
+vlan 21
+name DISTRIBUCION21
+
+vlan 61
+name CORPORATIVO61
+
+show vlan
+```
+
+* Interfaces VLAN:
+
+```
+enable
+configure terminal
+interface vlan 61
+ip address 192.168.91.1 255.255.255.0 (gateway y mask de lap2)
+no shutdown
+
+interface vlan 21
+ip address 2.0.0.2 255.0.0.0
+no shutdown
+```
+
+* Modo acceso:
+
+```
+enable
+configure terminal
+interface gigabitEthernet 0/2
+switchport mode access
+switchport access vlan 21
+
+interface port-channel 1
+switchport mode access
+switchport access vlan 61
+
+show running-config
+```
+
+* OSPF:
+
+```
+ip routing
+router ospf 10
+
+network 192.168.81.0 0.0.0.255 area 10
+network 192.168.91.0 0.0.0.255 area 10
+network 2.0.0.0 0.255.255.255 area 10
 
 show running-config
 ```
