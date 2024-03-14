@@ -18,9 +18,13 @@ Para mas informacion ver el documento completo en  [Redes2 Practica 2](https://u
 
 ---------------------------------------------------------
 ## Topología Utilizada
+Topologia propuesta
 
 ![Topologia de red practica 2!](Images/Topologia.png)
 
+Topologia completa
+
+![Topologia completa de red practica 2!](Images/TopologiaCompleta.png)
 ## Configuracion de VLAN
 
 * CORPORATIVO61
