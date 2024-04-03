@@ -36,3 +36,87 @@ vtp mode client
 exit
 show vtp status
 ```
+
+#### Configuracion LACP
+MSW0 - MSW12
+```
+enable
+configure terminal
+interface range fastEthernet 0/1-3
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+MSW2 - MSW3
+```
+enable
+configure terminal
+interface range ge 1/0/1-3
+channel-protocol lacp
+channel-group 1 mode active
+
+show etherchannel summary
+```
+
+#### Configuracion OSPF
+MSW1 - MSW2 - MSW3 - MSW4
+```
+ip routing
+router ospf 10
+
+network 3.0.0.0 0.0.0.255 area 10
+network 192.168.13.0 0.0.0.255 area 10
+network 192.168.23.0 0.0.0.255 area 10
+
+show running-config
+```
+#### Configuracion HSRP
+MSW9 - MSW10 - MSW13 - MSW14
+```
+int range fe0/11-12
+switchport trunk encapsulation dot1q
+switchport trunk allowed vlan all
+switchport mode trunk
+
+interface vlan 13
+ip add 192.168.13.6 255.255.255.0
+ip helper-address 192.168.13.2
+standby 10 ip 192.168.13.1
+standby 10 priority 110
+standby 10 preempt
+
+interface vlan 23
+ip add 192.168.23.6 255.255.255.0
+ip helper-address 192.168.23.2
+standby 10 ip 192.168.23.1
+standby 10 priority 110
+standby 10 preempt
+```
+
+#### Configuraciones Trunk y Access
+Modo Troncal(aplica para todos los demas switches que se requiera la configuracion)
+
+MSW11
+```
+int range fe0/11-12
+switchport trunk encapsulation dot1q
+switchport trunk allowed vlan all
+switchport mode trunk
+```
+
+Modo acceso
+
+SW2 - SW3
+```
+int fe0/1-2
+switchport mode access
+switchport access vlan 13
+```
+
+SW1 - SW4
+```
+int fe0/1-2
+switchport mode access
+switchport access vlan 23
+```
