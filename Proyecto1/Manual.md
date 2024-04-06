@@ -21,3 +21,18 @@ justo y equitativo para todos. Actualmente, deciden emprender su nueva red y lo 
 ### Topologia Completa
 ![Topologia completa!](img/Topo1.png "Topologia hecha por los estudiantes")
 
+### Configuracion VTP 
+#### Modo Servidor(sw0,msw5,msw0)
+```
+vtp domain g1
+vtp mode server
+exit
+show vtp status
+```
+#### Modo Cliente(sw1,sw2,sw3,msw6,msw4,msw3,msw1,msw11,msw2,msw7,msw8,msw9,msw10)
+```
+vtp domain g1
+vtp mode client
+exit
+show vtp status
+```
