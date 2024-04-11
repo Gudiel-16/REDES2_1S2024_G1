@@ -19,7 +19,7 @@ justo y equitativo para todos. Actualmente, deciden emprender su nueva red y lo 
 ![Topologia del eneunciado!](img/Topo1.png "Topologia propuesta")
 
 ### Topologia Completa
-![Topologia completa!](img/Topo1.png "Topologia hecha por los estudiantes")
+![Topologia completa!](img/topologia_final_py1.png "Topologia hecha por los estudiantes")
 
 ### Configuracion VTP 
 #### Modo Servidor(sw0,msw5,msw0)
